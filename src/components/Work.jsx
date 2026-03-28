@@ -3,7 +3,7 @@ import { useReveal } from '../hooks/useReveal'
 const PROJECTS = [
   {
     num: '01',
-    title: 'Portfolio v2',
+    title: 'Portfolio',
     titleHover: 'group-hover:text-retro-terra',
     description:
       'A retro-modern developer portfolio rebuilt from scratch with Vite + React. Features a custom dot-ring cursor, slide-up CLI terminal with live commands, 3-2-1 countdown loader, IntersectionObserver scroll-reveal animations, dark/light mode with localStorage persistence, and interactive skill proficiency bars. Fully responsive across all breakpoints.',
