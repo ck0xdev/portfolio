@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Google Fonts ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Space+Mono:wght@400;700&family=Permanent+Marker&display=swap');
+
+/* ─── Custom Cursor ─────────────────────────────────────── */
+.cursor-dot,
+.cursor-outline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  background-color: #e07a5f;
+}
+
+.cursor-outline {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #e07a5f;
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.cursor-outline.hover {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(224, 122, 95, 0.1);
+}
+
+/* ─── Grain Overlay ─────────────────────────────────────── */
+.grain-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.4;
+}
+
+.dark .grain-overlay {
+  opacity: 0.2;
+}
+
+/* ─── Paper Texture ─────────────────────────────────────── */
+.paper-texture {
+  background-color: #f7f5f0;
+  background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px;
+  background-position: -1px -1px;
+}
+
+.dark .paper-texture {
+  background-color: #1a1d23;
+  background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f1de;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e07a5f;
+  border-radius: 6px;
+  border: 3px solid #f4f1de;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1a1d23;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #f2cc8f;
+  border: 3px solid #1a1d23;
+}
+
+/* ─── Terminal Font ─────────────────────────────────────── */
+.terminal {
+  font-family: 'Space Mono', monospace;
+  text-shadow: 0 0 5px rgba(129, 178, 154, 0.5);
+}
+
+/* ─── Reveal Animation ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Geo Shape ─────────────────────────────────────────── */
+.geo-shape {
+  position: absolute;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+/* ─── Skill Item ────────────────────────────────────────── */
+.skill-item {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Proficiency label — hidden below card, slides up on hover ── */
+.skill-proficiency {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(224, 122, 95, 0.95);
+  color: white;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-family: 'Space Mono', monospace;
+  /* push fully out of view — extra 2px to kill any sub-pixel bleed */
+  transform: translateY(calc(100% + 2px));
+  transition: transform 0.3s ease;
+  text-align: center;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.dark .skill-proficiency {
+  background: rgba(242, 204, 143, 0.95);
+  color: #1a1d23;
+}
+
+.skill-item:hover .skill-proficiency {
+  transform: translateY(0);
+}
+
+/* ── Bar — fully hidden by default, animates in on hover ── */
+.skill-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: #f2cc8f;
+  box-shadow: 0 0 8px rgba(242, 204, 143, 0.8);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+.dark .skill-bar {
+  background: #f2cc8f;
+  box-shadow: 0 0 8px rgba(242, 204, 143, 0.8);
+}
+
+:root:not(.dark) .skill-bar {
+  background: #e07a5f;
+  box-shadow: 0 0 8px rgba(224, 122, 95, 0.7);
+}
+
+.skill-item:hover .skill-bar {
+  width: var(--proficiency);
+}
+
+/* ─── Loader Count ──────────────────────────────────────── */
+.loader-count {
+  font-variant-numeric: tabular-nums;
+}
