@@ -10,10 +10,10 @@ const SKILL_GROUPS = [
     labelText: 'text-retro-terra',
     itemBorder: 'border-retro-terra/10',
     skills: [
-      { icon: 'devicon-c-plain', label: 'C', pct: 85 },
-      { icon: 'devicon-java-plain', label: 'Java', pct: 75 },
-      { icon: 'devicon-javascript-plain text-yellow-500', label: 'JavaScript', pct: 90 },
-      { icon: 'devicon-python-plain text-blue-500', label: 'Python', pct: 80 },
+      { icon: 'devicon-c-plain', label: 'C', pct: 25 },
+      { icon: 'devicon-java-plain', label: 'Java', pct: 40 },
+      { icon: 'devicon-javascript-plain text-yellow-500', label: 'JavaScript', pct: 70 },
+      { icon: 'devicon-python-plain text-blue-500', label: 'Python', pct: 50 },
     ],
   },
   {
@@ -26,9 +26,9 @@ const SKILL_GROUPS = [
     itemBorder: 'border-retro-teal/10',
     skills: [
       { icon: 'devicon-html5-plain text-orange-500', label: 'HTML', pct: 95 },
-      { icon: 'devicon-css3-plain text-blue-500', label: 'CSS', pct: 90 },
+      { icon: 'devicon-css3-plain text-blue-500', label: 'CSS', pct: 78 },
       { icon: 'devicon-bootstrap-plain text-purple-500', label: 'Bootstrap', pct: 85 },
-      { icon: 'devicon-react-original text-cyan-400', label: 'React', pct: 88 },
+      { icon: 'devicon-react-original text-cyan-400', label: 'React', pct: 70 },
       { icon: 'devicon-tailwindcss-original text-cyan-500', label: 'Tailwind', pct: 92 },
     ],
   },
@@ -41,7 +41,7 @@ const SKILL_GROUPS = [
     labelText: 'text-retro-mustard',
     itemBorder: 'border-retro-mustard/10',
     skills: [
-      { icon: 'devicon-mongodb-plain text-green-500', label: 'MongoDB', pct: 70 },
+      { icon: 'devicon-mongodb-plain text-green-500', label: 'MongoDB', pct: 45 },
       { icon: 'devicon-mysql-plain', label: 'MySQL', pct: 75 },
       { icon: 'devicon-firebase-plain text-orange-400', label: 'Firebase', pct: 85 },
     ],
