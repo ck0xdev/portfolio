@@ -42,8 +42,8 @@ const SKILL_GROUPS = [
     itemBorder: 'border-retro-mustard/10',
     skills: [
       { icon: 'devicon-mongodb-plain text-green-500', label: 'MongoDB', pct: 45 },
-      { icon: 'devicon-mysql-plain', label: 'MySQL', pct: 75 },
-      { icon: 'devicon-firebase-plain text-orange-400', label: 'Firebase', pct: 85 },
+      { icon: 'devicon-mysql-plain', label: 'MySQL', pct: 35 },
+      { icon: 'devicon-firebase-plain text-orange-400', label: 'Firebase', pct: 25 },
     ],
   },
   {
