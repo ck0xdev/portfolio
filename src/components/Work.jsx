@@ -7,9 +7,25 @@ const ONGOING_PROJECTS = [
     tags: ['Vite', 'React', 'Tailwind CSS'],
     href: 'https://ck0xdev.vercel.app/',
     accent: 'border-retro-teal',
-    bg: 'bg-retro-teal/5'
+    bg: 'bg-retro-teal/5',
+    hasLink: true
   },
-  
+  {
+    title: 'Gujjulang',
+    description: 'Developing a new programming language with a .gj extension and a custom CLI interface.',
+    tags: ['Compilers', 'CLI', 'JavaScript'],
+    accent: 'border-retro-teal',
+    bg: 'bg-retro-teal/5',
+    hasLink: false
+  },
+  {
+    title: 'PhonixUI',
+    description: 'A custom-built CSS framework focused on clean, modern, and highly performant component structures.',
+    tags: ['CSS', 'Framework', 'UI/UX'],
+    accent: 'border-retro-teal',
+    bg: 'bg-retro-teal/5',
+    hasLink: false
+  }
 ]
 
 const COMPLETED_PROJECTS = [
@@ -19,7 +35,8 @@ const COMPLETED_PROJECTS = [
     tags: ['React', 'Firebase', 'Vite'],
     href: 'https://github.com/ck0xdev/ServeX',
     accent: 'border-retro-terra',
-    bg: 'bg-retro-terra/5'
+    bg: 'bg-retro-terra/5',
+    hasLink: true
   },
   {
     title: 'DataXplore',
@@ -27,7 +44,8 @@ const COMPLETED_PROJECTS = [
     tags: ['Python', 'HTML', 'Data Viz'],
     href: 'https://github.com/ck0xdev/dataXplore',
     accent: 'border-retro-terra',
-    bg: 'bg-retro-terra/5'
+    bg: 'bg-retro-terra/5',
+    hasLink: true
   }
 ]
 
@@ -45,15 +63,17 @@ function ProjectCard({ project }) {
           ))}
         </div>
       </div>
-      <a 
-        href={project.href} 
-        target="_blank" 
-        rel="noreferrer" 
-        className="font-mono text-xs uppercase tracking-widest hover:underline inline-flex items-center gap-2"
-        data-cursor
-      >
-        View Project →
-      </a>
+      {project.hasLink && (
+        <a 
+          href={project.href} 
+          target="_blank" 
+          rel="noreferrer" 
+          className="font-mono text-xs uppercase tracking-widest hover:underline inline-flex items-center gap-2"
+          data-cursor
+        >
+          View Project →
+        </a>
+      )}
     </div>
   )
 }
@@ -64,7 +84,6 @@ export default function Work() {
   return (
     <section id="work" ref={ref} className="py-32 px-6">
       <div className="max-w-6xl mx-auto">
-        {/* Brown Line: Main Heading */}
         <div className="reveal mb-20">
           <h2 className="font-serif text-5xl md:text-7xl font-bold text-retro-terra">
             Selected Work
@@ -72,7 +91,6 @@ export default function Work() {
           <div className="h-1 w-32 bg-retro-terra mt-4 opacity-50" />
         </div>
 
-        {/* Blue Section: Currently Working */}
         <div className="reveal mb-24">
           <div className="flex items-center gap-4 mb-10">
             <h3 className="font-mono text-xl md:text-2xl text-retro-teal uppercase tracking-tighter font-bold">
@@ -87,7 +105,6 @@ export default function Work() {
           </div>
         </div>
 
-        {/* Red Section: My Works */}
         <div className="reveal">
           <div className="flex items-center gap-4 mb-10">
             <h3 className="font-mono text-xl md:text-2xl text-retro-terra uppercase tracking-tighter font-bold">
