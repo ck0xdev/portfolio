@@ -1,52 +1,62 @@
 import { useReveal } from '../hooks/useReveal'
 
-const PROJECTS = [
+const ONGOING_PROJECTS = [
   {
-    num: '01',
     title: 'Portfolio',
-    titleHover: 'group-hover:text-retro-terra',
-    description:
-      'A retro-modern developer portfolio rebuilt from scratch with Vite + React. Features a custom dot-ring cursor, slide-up CLI terminal with live commands, 3-2-1 countdown loader, IntersectionObserver scroll-reveal animations, dark/light mode with localStorage persistence, and interactive skill proficiency bars. Fully responsive across all breakpoints.',
-    tags: ['Vite', 'React 18', 'Tailwind CSS v3', 'JavaScript', 'Firebase'],
-    linkColor: 'text-retro-terra',
-    href: 'https://github.com/ck0xdev/portfolio',
-    bgFrom: 'from-retro-terra/20',
-    bgTo: 'to-retro-mustard/20',
-    bgBase: 'bg-retro-mustard/10',
-    borderColor: 'border-retro-terra/20',
-    reverse: false,
+    description: 'My current retro-modern developer portfolio built with Vite and React. Featuring a slide-up CLI terminal and interactive animations.',
+    tags: ['Vite', 'React', 'Tailwind CSS'],
+    href: 'https://ck0xdev.vercel.app/',
+    accent: 'border-retro-teal',
+    bg: 'bg-retro-teal/5'
   },
-  {
-    num: '02',
-    title: 'ServeX',
-    titleHover: 'group-hover:text-retro-teal',
-    description:
-      'A modern web services platform with Firebase authentication, user dashboard, file upload system, and admin panel. Features neumorphic UI design and fully responsive layout.',
-    tags: ['React 18', 'Tailwind CSS 3', 'Firebase', 'Vite', 'Lucide React'],
-    linkColor: 'text-retro-teal',
-    href: 'https://github.com/ck0xdev/ServeX',
-    bgFrom: 'from-retro-teal/20',
-    bgTo: 'to-retro-mustard/20',
-    bgBase: 'bg-retro-teal/10',
-    borderColor: 'border-retro-teal/20',
-    reverse: true,
-  },
-  {
-    num: '03',
-    title: 'DataXplore',
-    titleHover: 'group-hover:text-retro-mustard',
-    description:
-      'College minor project focused on data exploration and visualization. Combines Python backend with a clean HTML/JS frontend for interactive data analysis.',
-    tags: ['HTML', 'Python', 'Data Viz', 'JavaScript'],
-    linkColor: 'text-retro-mustard',
-    href: 'https://github.com/ck0xdev/dataXplore',
-    bgFrom: 'from-retro-mustard/20',
-    bgTo: 'to-retro-terra/20',
-    bgBase: 'bg-retro-terra/10',
-    borderColor: 'border-retro-mustard/20',
-    reverse: false,
-  },
+  
 ]
+
+const COMPLETED_PROJECTS = [
+  {
+    title: 'ServeX',
+    description: 'A modern web services platform with Firebase authentication and a neumorphic UI design.',
+    tags: ['React', 'Firebase', 'Vite'],
+    href: 'https://github.com/ck0xdev/ServeX',
+    accent: 'border-retro-terra',
+    bg: 'bg-retro-terra/5'
+  },
+  {
+    title: 'DataXplore',
+    description: 'College minor project focused on data visualization combining Python and interactive JS frontends.',
+    tags: ['Python', 'HTML', 'Data Viz'],
+    href: 'https://github.com/ck0xdev/dataXplore',
+    accent: 'border-retro-terra',
+    bg: 'bg-retro-terra/5'
+  }
+]
+
+function ProjectCard({ project }) {
+  return (
+    <div className={`group p-6 rounded-2xl border-2 ${project.accent} ${project.bg} backdrop-blur-sm transition-all hover:scale-[1.02] hover:shadow-xl flex flex-col justify-between`}>
+      <div>
+        <h4 className="font-serif text-2xl font-bold mb-3">{project.title}</h4>
+        <p className="font-mono text-sm opacity-80 mb-4">{project.description}</p>
+        <div className="flex gap-2 flex-wrap mb-6">
+          {project.tags.map(tag => (
+            <span key={tag} className="text-[10px] font-mono border border-current px-2 py-0.5 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      <a 
+        href={project.href} 
+        target="_blank" 
+        rel="noreferrer" 
+        className="font-mono text-xs uppercase tracking-widest hover:underline inline-flex items-center gap-2"
+        data-cursor
+      >
+        View Project →
+      </a>
+    </div>
+  )
+}
 
 export default function Work() {
   const ref = useReveal()
@@ -54,63 +64,42 @@ export default function Work() {
   return (
     <section id="work" ref={ref} className="py-32 px-6">
       <div className="max-w-6xl mx-auto">
-        <h2 className="font-serif text-5xl md:text-7xl font-bold mb-20 reveal text-retro-teal">
-          Selected Work
-        </h2>
+        {/* Brown Line: Main Heading */}
+        <div className="reveal mb-20">
+          <h2 className="font-serif text-5xl md:text-7xl font-bold text-retro-terra">
+            Selected Work
+          </h2>
+          <div className="h-1 w-32 bg-retro-terra mt-4 opacity-50" />
+        </div>
 
-        <div className="space-y-32">
-          {PROJECTS.map((project) => (
-            <div key={project.num} className="group relative reveal">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                {/* Image placeholder */}
-                <div
-                  className={`relative overflow-hidden rounded-2xl ${project.bgBase} aspect-video border-2 ${project.borderColor} ${project.reverse ? 'md:order-2' : ''}`}
-                >
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${project.bgFrom} ${project.bgTo} group-hover:scale-110 transition-transform duration-700`}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center font-mono text-4xl opacity-30">
-                    {project.num}
-                  </div>
-                  {/* Dot pattern overlay */}
-                  <div
-                    className="absolute inset-0 opacity-20"
-                    style={{
-                      backgroundImage:
-                        "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E07A5F' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E\")",
-                    }}
-                  />
-                </div>
+        {/* Blue Section: Currently Working */}
+        <div className="reveal mb-24">
+          <div className="flex items-center gap-4 mb-10">
+            <h3 className="font-mono text-xl md:text-2xl text-retro-teal uppercase tracking-tighter font-bold">
+              Currently Working
+            </h3>
+            <div className="flex-1 h-[1px] bg-retro-teal opacity-30" />
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {ONGOING_PROJECTS.map((p, i) => (
+              <ProjectCard key={i} project={p} />
+            ))}
+          </div>
+        </div>
 
-                {/* Content */}
-                <div className={`space-y-4 ${project.reverse ? 'md:order-1' : ''}`}>
-                  <h3
-                    className={`font-serif text-4xl font-bold ${project.titleHover} transition-colors cursor-none`}
-                    data-cursor
-                  >
-                    {project.title}
-                  </h3>
-                  <p className="font-mono opacity-70">{project.description}</p>
-                  <div className="flex gap-2 flex-wrap">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="text-xs font-mono border border-current px-2 py-1 rounded">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`inline-flex items-center gap-2 font-mono ${project.linkColor} hover:underline mt-4 cursor-none`}
-                    data-cursor
-                  >
-                    View on GitHub →
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+        {/* Red Section: My Works */}
+        <div className="reveal">
+          <div className="flex items-center gap-4 mb-10">
+            <h3 className="font-mono text-xl md:text-2xl text-retro-terra uppercase tracking-tighter font-bold">
+              My Works
+            </h3>
+            <div className="flex-1 h-[1px] bg-retro-terra opacity-30" />
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {COMPLETED_PROJECTS.map((p, i) => (
+              <ProjectCard key={i} project={p} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
