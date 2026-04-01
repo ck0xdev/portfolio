@@ -11,21 +11,23 @@ const ONGOING_PROJECTS = [
     hasLink: true
   },
   {
+    title: 'PhonixUI',
+    description: 'A custom-built CSS framework focused on clean, modern, and highly performant component structures.',
+    tags: ['CSS', 'Framework', 'UI/UX'],
+    href: 'https://ck0xdev.github.io/PhonixUI/',
+    accent: 'border-retro-teal',
+    bg: 'bg-retro-teal/5',
+    hasLink: true
+  },
+  {
     title: 'Gujjulang',
     description: 'Developing a new programming language with a .gj extension and a custom CLI interface.',
     tags: ['Compilers', 'CLI', 'JavaScript'],
     accent: 'border-retro-teal',
     bg: 'bg-retro-teal/5',
     hasLink: false
-  },
-  {
-    title: 'PhonixUI',
-    description: 'A custom-built CSS framework focused on clean, modern, and highly performant component structures.',
-    tags: ['CSS', 'Framework', 'UI/UX'],
-    accent: 'border-retro-teal',
-    bg: 'bg-retro-teal/5',
-    hasLink: false
   }
+  
 ]
 
 const COMPLETED_PROJECTS = [
