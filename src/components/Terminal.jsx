@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom' // Added for routing
 
 const COMMANDS = {
   help: () => 'Available commands: about, skills, contact, clear, exit',
@@ -10,6 +11,7 @@ const COMMANDS = {
 }
 
 export default function Terminal({ open, onClose }) {
+  const navigate = useNavigate() // Initialize navigation
   const [lines, setLines] = useState([
     { text: "Welcome to ck0x portfolio", type: 'info' },
     { text: "Type 'help' for available commands", type: 'info' },
@@ -45,6 +47,19 @@ export default function Terminal({ open, onClose }) {
       setTimeout(onClose, 400)
       return
     }
+    
+    // ADDED: Secret Admin Command Redirect
+    if (cmd === 'admin') {
+      newLines.push({ text: 'Authenticating... Redirecting to Secure Gateway.', type: 'info' })
+      setLines(newLines)
+      setTimeout(() => {
+        onClose()
+        setLines([]) // Reset terminal lines for next open
+        navigate('/admin') // Redirect to admin page
+      }, 800)
+      return
+    }
+
     if (COMMANDS[cmd]) {
       newLines.push({ text: COMMANDS[cmd](), type: 'out' })
     } else if (cmd) {
