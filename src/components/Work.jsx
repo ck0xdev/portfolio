@@ -54,8 +54,17 @@ export default function Work() {
         const snapshot = await getDocs(q)
         const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
         
-        // Bulletproof sorting
+        // ─── UPDATED PIXEL-PERFECT SORTING ───
         fetched.sort((a, b) => {
+          // 1. First, compare by Priority (Highest number first)
+          const priorityA = Number(a.priority) || 0
+          const priorityB = Number(b.priority) || 0
+          
+          if (priorityB !== priorityA) {
+            return priorityB - priorityA
+          }
+
+          // 2. Fallback to Date if priority is identical (Newest first)
           const timeA = (a.createdAt && typeof a.createdAt.toMillis === 'function') ? a.createdAt.toMillis() : 0
           const timeB = (b.createdAt && typeof b.createdAt.toMillis === 'function') ? b.createdAt.toMillis() : 0
           return timeB - timeA
