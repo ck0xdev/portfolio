@@ -1,14 +1,11 @@
 import { useState, useRef } from 'react'
-import emailjs from '@emailjs/browser'
+import { db } from '../lib/firebase' // Added Firebase imports
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { useReveal } from '../hooks/useReveal'
 
 // ── Rate-limit: max 1 submission per 60 seconds per session ──
 const RATE_LIMIT_MS = 60_000
 let lastSubmitTime = 0
-
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
   const ref     = useReveal()
@@ -31,28 +28,26 @@ export default function Contact() {
       return
     }
 
-    // ── 3. Env-var guard (show friendly error if .env not set up) ──
-    if (!SERVICE_ID || SERVICE_ID.includes('xxx')) {
-      setStatus('noenv')
-      return
-    }
-
     setStatus('sending')
 
     try {
-      // sendForm reads field `name` attributes directly from the DOM —
-      // your email address is NEVER in the frontend code.
-      // EmailJS maps {{from_name}}, {{from_email}}, {{message}}
-      // to the recipient you set inside your dashboard template.
-      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, {
-        publicKey: PUBLIC_KEY,
+      // ── 3. Firebase Integration ──
+      const formData = new FormData(formRef.current)
+      
+      // Send directly to the 'messages' collection you made for the Dashboard
+      await addDoc(collection(db, 'messages'), {
+        name: formData.get('from_name'),
+        email: formData.get('from_email'),
+        message: formData.get('message'),
+        timestamp: serverTimestamp(),
+        read: false // This makes it show up as "Unread" in your control center
       })
 
       lastSubmitTime = Date.now()
       setStatus('success')
       formRef.current.reset()
     } catch (err) {
-      console.error('EmailJS error:', err)
+      console.error('Firebase error:', err)
       setStatus('error')
     }
   }
@@ -62,11 +57,10 @@ export default function Contact() {
     success:   { color: 'text-retro-teal',              msg: '✓ Message sent! I\'ll get back to you soon.' },
     error:     { color: 'text-retro-terra',             msg: '✗ Something went wrong. Try again or reach out on Discord.' },
     ratelimit: { color: 'text-retro-mustard',           msg: '⏱ One message per minute — please wait a moment.' },
-    noenv:     { color: 'text-retro-mustard',           msg: '⚙ EmailJS not configured yet. Check your .env file.' },
   }
 
   return (
-    <section id="contact" ref={ref} className="py-32 px-6 relative">
+    <section id="contact" ref={ref} className="pt-12 pb-32 px-6 relative">
       <div className="max-w-3xl mx-auto">
         <div className="reveal">
           <h2 className="font-serif text-5xl md:text-7xl font-bold mb-12">Let's Talk</h2>

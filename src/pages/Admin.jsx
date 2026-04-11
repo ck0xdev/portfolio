@@ -1,19 +1,29 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { auth } from '../lib/firebase' // Import your Firebase auth instance
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 export default function Admin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    // Hardcoded check for now (We can connect Firebase later)
-    if (email === 'admin@ck0x.dev' && password === 'admin123') {
-      navigate('/dashboard')
-    } else {
-      setError('ACCESS DENIED. Invalid credentials.')
+    setLoading(true)
+    setError('')
+    
+    try {
+      // Authenticate against your single Firebase user
+      await signInWithEmailAndPassword(auth, email, password)
+      navigate('/dashboard') 
+    } catch (err) {
+      console.error(err)
+      setError('ACCESS DENIED. Unauthorized terminal access.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -52,10 +62,11 @@ export default function Admin() {
 
           <button 
             type="submit" 
-            className="w-full py-3 mt-4 border-2 border-green-400 hover:bg-green-400 hover:text-black transition-colors uppercase font-bold tracking-widest cursor-none"
+            disabled={loading}
+            className="w-full py-3 mt-4 border-2 border-green-400 hover:bg-green-400 hover:text-black transition-colors uppercase font-bold tracking-widest cursor-none disabled:opacity-50"
             data-cursor
           >
-            Authenticate
+            {loading ? 'Decrypting...' : 'Authenticate'}
           </button>
         </form>
         
