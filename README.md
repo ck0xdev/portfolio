@@ -1,22 +1,99 @@
-# ck0x Portfolio — Retro-Modern Developer Experience
+# ck0xdev — Portfolio (Coming Soon)
 
-A high-performance, minimalist developer portfolio built with a "retro-modern" aesthetic. This project showcases a fusion of old-school CLI interfaces with cutting-edge frontend technologies.
+> A modern, Neobrutalist "Coming Soon" page for my personal portfolio — built while the full portfolio is under construction.
 
-## 🚀 Overview
+🌐 **Live:** [ck0xdev.vercel.app](https://ck0xdev.vercel.app)
 
-This portfolio is built using **Vite**, **React 18**, and **Tailwind CSS v3**. It is designed to be lightweight, fully responsive, and SEO-optimized to highlight my work as a React Native Intern and Frontend Developer.
+---
+
+## 🎨 Design
+
+The page follows a **Neobrutalism** design philosophy — clean, bold, and intentional:
+
+- **Soft Neobrutalist card** with glassmorphism backdrop blur
+- **Sharp drop shadows** (the classic Neobrutalist signature)
+- **Animated liquid background orbs** with `mix-blend-multiply` / `mix-blend-screen`
+- **Dark / Light mode toggle** with smooth transitions
+- **Fully responsive** across all screen sizes
+
+---
 
 ## 🛠 Tech Stack
 
-- **Core:** React 18 (JSX), Vite
-- **Styling:** Tailwind CSS v3 (Custom Retro Theme)
-- **Animations:** Intersection Observer API, CSS Keyframes
-- **Backend Integration:** EmailJS (Secure Contact System)
+| Layer | Technology |
+|---|---|
+| Framework | React 18 (JSX) |
+| Build Tool | Vite |
+| Styling | Tailwind CSS v3 |
+| Font | Inter (Google Fonts) |
+| Deployment | Vercel |
 
-## ✨ Key Features
+---
 
-- **Interactive CLI Terminal:** A fully functional slide-up terminal accessible via `~` or the navigation menu, supporting custom commands like `about` and `skills`.
-- **Custom Cursor Experience:** A reactive dot-ring cursor that interacts with links and interactive elements.
-- **Retro Aesthetic:** Custom-built grain overlays and paper textures designed to create a unique "Old Money" minimalist feel.
-- **Scroll-Reveal System:** Smooth, high-performance element reveals powered by a custom `useReveal` hook.
-- **Adaptive Theming:** System-aware dark and light modes with local storage persistence.
+## ✨ Features
+
+- 🌓 **Theme Toggle** — One-click Dark/Light mode switching
+- 🫧 **Liquid Background** — Three animated color orbs (pink, yellow, cyan)
+- 🔗 **Footer Links** — GitHub & Discord directly accessible
+- ⚡ **Zero Backend** — Fully static, no database, no server costs
+- 🔒 **Secure by design** — No forms, no inputs, no attack surface
+
+---
+
+## 📦 Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Run dev server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+---
+
+## 🔍 SEO
+
+| Tag | Status |
+|---|---|
+| `<title>` | ✅ Set |
+| `meta description` | ✅ Set |
+| `canonical` URL | ✅ Set |
+| Open Graph (og:*) | ✅ Full set with absolute URLs |
+| Twitter Card | ✅ `summary_large_image` |
+| Google Verification | ✅ Verified via HTML tag |
+| `sitemap.xml` | ✅ In `public/` |
+| `robots.txt` | ✅ In `public/` |
+
+---
+
+## 📁 Project Structure
+
+```
+ck0x-portfolio/
+├── public/
+│   ├── sitemap.xml         # Sitemap for Google indexing
+│   ├── robots.txt          # Bot crawl rules
+│   ├── google*.html        # Google Search Console verification
+│   └── favicon.ico
+├── src/
+│   ├── App.jsx             # Main page component
+│   ├── main.jsx            # React entry point
+│   └── index.css           # Global styles & animations
+├── index.html              # SEO-optimized HTML shell
+└── tailwind.config.js      # Tailwind + dark mode config
+```
+
+---
+
+## 📬 Contact
+
+- **GitHub:** [@ck0xdev](https://github.com/ck0xdev)
+- **Discord:** [ck0xdev](https://discord.com/users/1389525213376544768)
+
+---
+
+*Full portfolio coming soon. Stay tuned.*
