@@ -1,99 +1,79 @@
-# ck0xdev — Portfolio (Coming Soon)
+# ck0xdev — Portfolio
 
-> A modern, Neobrutalist "Coming Soon" page for my personal portfolio — built while the full portfolio is under construction.
+> Personal portfolio site for **ck0xdev** — deployed on [ck0xdev.vercel.app](https://ck0xdev.vercel.app)
 
-🌐 **Live:** [ck0xdev.vercel.app](https://ck0xdev.vercel.app)
+## Tech Stack
 
----
-
-## 🎨 Design
-
-The page follows a **Neobrutalism** design philosophy — clean, bold, and intentional:
-
-- **Soft Neobrutalist card** with glassmorphism backdrop blur
-- **Sharp drop shadows** (the classic Neobrutalist signature)
-- **Animated liquid background orbs** with `mix-blend-multiply` / `mix-blend-screen`
-- **Dark / Light mode toggle** with smooth transitions
-- **Fully responsive** across all screen sizes
+- **React 18** + **Vite 5**
+- **Tailwind CSS v3** (dark mode via `class` strategy)
+- **EmailJS** (contact form)
 
 ---
 
-## 🛠 Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Framework | React 18 (JSX) |
-| Build Tool | Vite |
-| Styling | Tailwind CSS v3 |
-| Font | Inter (Google Fonts) |
-| Deployment | Vercel |
-
----
-
-## ✨ Features
-
-- 🌓 **Theme Toggle** — One-click Dark/Light mode switching
-- 🫧 **Liquid Background** — Three animated color orbs (pink, yellow, cyan)
-- 🔗 **Footer Links** — GitHub & Discord directly accessible
-- ⚡ **Zero Backend** — Fully static, no database, no server costs
-- 🔒 **Secure by design** — No forms, no inputs, no attack surface
-
----
-
-## 📦 Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Run dev server
-npm run dev
-
-# Build for production
-npm run build
-```
-
----
-
-## 🔍 SEO
-
-| Tag | Status |
-|---|---|
-| `<title>` | ✅ Set |
-| `meta description` | ✅ Set |
-| `canonical` URL | ✅ Set |
-| Open Graph (og:*) | ✅ Full set with absolute URLs |
-| Twitter Card | ✅ `summary_large_image` |
-| Google Verification | ✅ Verified via HTML tag |
-| `sitemap.xml` | ✅ In `public/` |
-| `robots.txt` | ✅ In `public/` |
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 ck0x-portfolio/
-├── public/
-│   ├── sitemap.xml         # Sitemap for Google indexing
-│   ├── robots.txt          # Bot crawl rules
-│   ├── google*.html        # Google Search Console verification
-│   └── favicon.ico
+├── public/                         # Static files — all copied to dist/ on build
+│   ├── favicon.ico                 # Browser tab icon
+│   ├── favicon.png                 # OG image / apple-touch-icon
+│   ├── robots.txt                  # Crawler rules + sitemap pointer
+│   ├── sitemap.xml                 # Google Search Console sitemap
+│   ├── google765c5857a2901b01.html # Google Search Console verification
+│   └── documents/                  # Resumé / PDFs (place files here)
 ├── src/
-│   ├── App.jsx             # Main page component
-│   ├── main.jsx            # React entry point
-│   └── index.css           # Global styles & animations
-├── index.html              # SEO-optimized HTML shell
-└── tailwind.config.js      # Tailwind + dark mode config
+│   ├── App.jsx                     # Main component
+│   ├── main.jsx                    # React entry point
+│   └── index.css                   # Global styles + Tailwind directives
+├── index.html                      # Root HTML (meta, OG, fonts)
+├── vite.config.js                  # Vite config (publicDir + build settings)
+├── tailwind.config.js              # Tailwind dark mode + content paths
+├── postcss.config.js               # PostCSS (autoprefixer)
+├── vercel.json                     # Vercel headers (Content-Type for sitemap)
+├── package.json
+└── .gitignore                      # Excludes node_modules/, dist/, .env
 ```
 
 ---
 
-## 📬 Contact
+## Development
 
-- **GitHub:** [@ck0xdev](https://github.com/ck0xdev)
-- **Discord:** [ck0xdev](https://discord.com/users/1389525213376544768)
+```bash
+npm install
+npm run dev       # starts dev server at http://localhost:5173
+```
+
+## Deploy (Vercel)
+
+Push to `main` — Vercel auto-deploys using:
+
+```
+Build Command:  npm run build   (→ vite build)
+Output Dir:     dist/
+```
+
+Everything inside `public/` is automatically copied into `dist/` during build — no manual steps needed.
 
 ---
 
-*Full portfolio coming soon. Stay tuned.*
+## SEO Files
+
+| File | Purpose |
+|------|---------|
+| `public/robots.txt` | Tells crawlers they can index everything, points to sitemap |
+| `public/sitemap.xml` | Submitted to Google Search Console |
+| `public/google765c5857a2901b01.html` | Search Console ownership verification |
+| `index.html` `<meta name="google-site-verification">` | Alternate verification method |
+| `vercel.json` | Forces `Content-Type: application/xml` on sitemap for GSC compatibility |
+
+---
+
+## Adding a Resumé / PDF
+
+Drop any file into `public/documents/` and reference it as:
+
+```
+https://ck0xdev.vercel.app/documents/resume.pdf
+```
+
+No rebuild needed — it goes live on next deploy.
