@@ -1,26 +1,32 @@
 {
-  "headers": [
+  "redirects": [
     {
-      "source": "/sitemap.xml",
-      "headers": [
+      "source": "/(.*)",
+      "has": [
         {
-          "key": "Content-Type",
-          "value": "application/xml; charset=utf-8"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "type": "host",
+          "value": "ck0xdev.vercel.app"
         }
-      ]
+      ],
+      "destination": "https://www.ck0x.me/$1",
+      "permanent": true
     },
     {
-      "source": "/robots.txt",
-      "headers": [
+      "source": "/(.*)",
+      "has": [
         {
-          "key": "Content-Type",
-          "value": "text/plain; charset=utf-8"
+          "type": "host",
+          "value": "ck0x.me"
         }
-      ]
+      ],
+      "destination": "https://www.ck0x.me/$1",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
