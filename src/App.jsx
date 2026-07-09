@@ -1,9 +1,8 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import BackgroundShader from './components/BackgroundShader';
 import Sidebar from './components/Sidebar';
 import Hero from './components/Hero';
 
-// Lazy load below-the-fold components
 const About = lazy(() => import('./components/About'));
 const Experience = lazy(() => import('./components/Experience'));
 const Projects = lazy(() => import('./components/Projects'));
@@ -17,7 +16,7 @@ function App() {
       <Sidebar />
       <main className="main-content">
         <Hero />
-        <Suspense fallback={<div style={{ height: '100vh' }}></div>}>
+        <Suspense fallback={<div style={{ height: '100dvh' }}></div>}>
           <About />
           <Experience />
           <Projects />

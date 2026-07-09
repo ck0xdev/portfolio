@@ -1,4 +1,3 @@
-import React from 'react';
 
 const Contact = () => {
   return (
@@ -41,23 +40,31 @@ const Contact = () => {
 
         {/* Socials & Status (Right) */}
         <div className="social-stack">
-          <a href="https://www.linkedin.com/in/ck0x/" target="_blank" rel="noreferrer" className="glass-card social-card">
-            <div className="social-card-icon"><i className="ph ph-linkedin-logo"></i></div>
-            <div className="social-card-content">
-              <span className="social-card-label">LINKEDIN</span>
-              <span className="social-card-handle">@ck0x</span>
-            </div>
-            <i className="ph ph-arrow-up-right social-card-arrow"></i>
-          </a>
-          
-          <a href="https://discord.com/users/1389525213376544768" target="_blank" rel="noreferrer" className="glass-card social-card">
-            <div className="social-card-icon"><i className="ph ph-discord-logo"></i></div>
-            <div className="social-card-content">
-              <span className="social-card-label">DISCORD</span>
-              <span className="social-card-handle">@ck0x</span>
-            </div>
-            <i className="ph ph-arrow-up-right social-card-arrow"></i>
-          </a>
+          {[
+            {
+              id: "linkedin",
+              href: "https://www.linkedin.com/in/ck0x/",
+              icon: "ph-linkedin-logo",
+              label: "LINKEDIN",
+              handle: "@ck0x"
+            },
+            {
+              id: "discord",
+              href: "https://discord.com/users/1389525213376544768",
+              icon: "ph-discord-logo",
+              label: "DISCORD",
+              handle: "@ck0x"
+            }
+          ].map(social => (
+            <a key={social.id} href={social.href} target="_blank" rel="noreferrer" className="glass-card social-card">
+              <div className="social-card-icon"><i className={`ph ${social.icon}`}></i></div>
+              <div className="social-card-content">
+                <span className="social-card-label">{social.label}</span>
+                <span className="social-card-handle">{social.handle}</span>
+              </div>
+              <i className="ph ph-arrow-up-right social-card-arrow"></i>
+            </a>
+          ))}
 
           <div className="glass-card status-card">
             <span className="status-label">CURRENTLY</span>

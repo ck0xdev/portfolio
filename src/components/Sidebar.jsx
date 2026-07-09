@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const originalLinks = [
   { id: 'home', icon: 'ph-house', label: 'Home' },
@@ -33,7 +33,7 @@ const Sidebar = () => {
   }, []);
 
   useEffect(() => {
-    const sections = document.querySelectorAll('.section');
+    let sections = document.querySelectorAll('.section');
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -51,7 +51,21 @@ const Sidebar = () => {
     }, observerOptions);
 
     sections.forEach(section => observer.observe(section));
-    return () => observer.disconnect();
+
+    const mutationObserver = new MutationObserver(() => {
+      const currentSections = document.querySelectorAll('.section');
+      if (currentSections.length > sections.length) {
+        sections = currentSections;
+        sections.forEach(section => observer.observe(section));
+      }
+    });
+
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, [dialAngle]);
 
   const updateNav = (newActiveId) => {

@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg-center: #1a1a1a;
     --bg-edge: #000000;
     --text-primary: #ffffff;
@@ -156,7 +156,7 @@ body {
 
 .section {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1015,3 +1015,109 @@ body {
 .glass-card { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .glass-card:hover { border-color: rgba(129, 140, 248, 0.4) !important; box-shadow: 0 8px 32px rgba(129, 140, 248, 0.15), inset 0 0 0 1px rgba(129, 140, 248, 0.1); transform: translateY(-5px); }
 
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: 120px;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        z-index: 50;
+        background: linear-gradient(to top, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.8) 60%, rgba(0, 0, 0, 0) 100%);
+        pointer-events: none;
+    }
+
+    .dial {
+        top: auto;
+        bottom: -320px;
+        left: 50%;
+        transform: translateX(-50%) rotate(calc(var(--dial-angle) - 90deg));
+    }
+
+    .nav-links a {
+        transform: translate(-50%, -50%) rotate(var(--item-angle)) translateX(190px) rotate(calc(-1 * var(--item-angle) - var(--dial-angle) + 90deg));
+    }
+
+    .nav-links a:hover .icon-content span, .nav-links a.active .icon-content span {
+        transform: translate(-50%, -25px);
+    }
+    
+    .icon-content span {
+        left: 50%;
+        top: auto;
+        bottom: 100%;
+        transform: translate(-50%, -10px);
+    }
+
+    .logo {
+        top: 1.5rem;
+        left: 1.5rem;
+    }
+
+    .padded-section {
+        padding: 100px 5% 150px 5%;
+    }
+
+    .about-container {
+        grid-template-columns: 1fr;
+    }
+
+    .bg-text {
+        font-size: 25vw;
+    }
+
+    .section-title {
+        font-size: 3rem;
+    }
+
+    .site-footer {
+        padding: 5rem 5% 150px 5%;
+    }
+
+    .hero-img-container img {
+        max-width: 280px;
+        max-height: 280px;
+    }
+    .hero-img-container::before {
+        width: 220px;
+        height: 220px;
+    }
+
+    #home .scroll-indicator {
+        bottom: 120px !important;
+    }
+
+    /* Contact Fixes */
+    .reach-out-card {
+        padding: 1.5rem;
+    }
+    .reach-out-title {
+        font-size: 2rem;
+    }
+    .info-pill {
+        padding: 1rem;
+        gap: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .info-pill-value {
+        word-break: break-all;
+    }
+    .social-card {
+        padding: 1.2rem;
+    }
+
+    /* Footer Fixes */
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    .footer-nav {
+        align-items: center;
+    }
+    .footer-logo {
+        margin-bottom: 1.5rem;
+    }
+}
