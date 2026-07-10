@@ -23,6 +23,7 @@ const About = () => {
           <div className="skill-tag">Git & GitHub</div>
           <div className="skill-tag">UI/UX Design</div>
           <div className="skill-tag">Figma</div>
+          <div className="skill-tag">REST APIs</div>
         </div>
       </div>
     </section>
