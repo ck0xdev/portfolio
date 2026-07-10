@@ -1,0 +1,25 @@
+{
+  "name": "ck0x-portfolio",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Personal portfolio for ck0xdev — Chintan Kukadiya, Frontend Developer based in Surat, India.",
+  "author": "Chintan Kukadiya <kukadiyachintan026@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.10"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
