@@ -236,6 +236,15 @@ body {
     color: var(--accent);
     text-transform: lowercase;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.logo .logo-img {
+    height: 2.5rem;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 

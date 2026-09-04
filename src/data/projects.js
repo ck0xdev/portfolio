@@ -14,16 +14,6 @@ export const PROJECTS = [
     icon: 'ph-arrow-up-right',
   },
   {
-    id: 'ascendrahub',
-    title: 'Ascendrahub',
-    placeholder: 'Ascendrahub',
-    description:
-      'A modern web platform delivering streamlined services and a seamless user experience.',
-    techStack: ['React', 'Tailwind CSS', 'Web Dev'],
-    link: 'https://ascendrahub.in',
-    icon: 'ph-arrow-up-right',
-  },
-  {
     id: 'vyaparbook',
     title: 'VyaparBook Mobile',
     placeholder: 'VyaparBook',

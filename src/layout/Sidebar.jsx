@@ -135,7 +135,7 @@ const Sidebar = () => {
         onClick={(e) => handleLinkClick(e, 'home')}
         onKeyDown={(e) => e.key === 'Enter' && handleLinkClick(e, 'home')}
       >
-        ck
+        <img src="/logo.png" alt="ck0xDev Logo" className="logo-img" />
       </div>
 
       <aside className="sidebar" id="sidebar" ref={sidebarRef} onWheel={handleWheel}>
