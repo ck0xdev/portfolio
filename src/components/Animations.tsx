@@ -172,16 +172,20 @@ export default function Animations() {
 
         // Initialize all Hero animation starting states immediately so they don't flash before the animation starts
         // Navbar
+        const isMobileScreen = window.innerWidth <= 768;
         gsap.set('.nav-wrapper', {
             y: -window.innerHeight,
             position: "fixed",
-            bottom: "2rem"
+            bottom: isMobileScreen ? "1rem" : "2rem"
         });
         gsap.set('.nav-island', {
             width: "48px",
             height: "48px",
+            minWidth: "48px",
+            maxWidth: "48px",
             borderRadius: "50%",
-            padding: "0"
+            padding: "0",
+            overflow: "hidden"
         });
         gsap.set('.nav-item', { opacity: 0, scale: 0.5 });
 
@@ -233,7 +237,9 @@ export default function Animations() {
                 .to('.nav-island', {
                     width: "auto",
                     height: "auto",
-                    padding: "0.5rem",
+                    minWidth: "auto",
+                    maxWidth: isMobileScreen ? "calc(100vw - 2rem)" : "none",
+                    padding: isMobileScreen ? "0.4rem 0.5rem" : "0.5rem",
                     borderRadius: "100px",
                     duration: 1.0,
                     ease: "power4.out" // Extremely smooth stretch instead of bouncy elastic

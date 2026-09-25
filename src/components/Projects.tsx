@@ -58,7 +58,7 @@ export default function Projects() {
             <div className="project-info">
               <h3 className="project-title">Portfolio Redesign</h3>
               <p className="project-desc">
-                A highly interactive, modern portfolio built with premium animations and glassmorphism design.
+                A modern, responsive portfolio built with Next.js, TypeScript, and clean interactive design.
               </p>
               <div className="project-tags" style={{ marginBottom: "1.5rem" }}>
                 <span className="skill-tag">Next.js</span>

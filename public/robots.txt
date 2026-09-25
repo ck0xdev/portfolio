@@ -1,5 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
-Disallow: /assets/
 
-Sitemap: https://www.ck0x.me/sitemap.xml
+# Host
+Host: https://ck0x.me
+
+# Sitemaps
+Sitemap: https://ck0x.me/sitemap.xml

@@ -7,8 +7,9 @@ export default function Hero() {
                     <div className="x-stick x-stick-1"></div>
                     <div className="x-stick x-stick-2"></div>
                     <h1 className="hero-bg-text">
-                        <span className="bg-text-left">ck0</span><span className="bg-text-x">X</span><span
-                            className="bg-text-right">Dev</span>
+                        <span className="sr-only">Chintan Kukadiya - Frontend Developer &amp; Video Editor Portfolio</span>
+                        <span className="bg-text-left" aria-hidden="true">ck0</span><span className="bg-text-x" aria-hidden="true">X</span><span
+                            className="bg-text-right" aria-hidden="true">Dev</span>
                     </h1>
                 </div>
     
@@ -17,7 +18,7 @@ export default function Hero() {
                         <div className="avatar-container">
                             <Image
                                 src="/assets/hero.png"
-                                alt="ck0xDev Avatar"
+                                alt="Chintan Kukadiya (ck0x) - Frontend Developer and Video Editor"
                                 id="hero-avatar"
                                 className="fade-bottom"
                                 width={500}
