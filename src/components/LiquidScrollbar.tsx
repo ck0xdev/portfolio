@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import anime from 'animejs';
 
 export default function LiquidScrollbar() {
     const thumbRef = useRef<HTMLDivElement>(null);
@@ -15,67 +14,70 @@ export default function LiquidScrollbar() {
         const track = trackRef.current;
         if (!thumb || !track) return;
 
-        let scrollTimeout: NodeJS.Timeout;
+        let ticking = false;
         let lastScrollY = window.scrollY;
+        let docHeight = document.documentElement.scrollHeight;
+        let winHeight = window.innerHeight;
+        let trackHeight = track.clientHeight;
 
-        const updateScrollbar = () => {
-            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-            
+        const updateDimensions = () => {
+            docHeight = document.documentElement.scrollHeight;
+            winHeight = window.innerHeight;
+            trackHeight = track.clientHeight;
+        };
+
+        const renderScrollbar = () => {
+            const scrollHeight = docHeight - winHeight;
             if (scrollHeight <= 0) {
                 thumb.style.opacity = '0';
+                ticking = false;
                 return;
             }
             thumb.style.opacity = '1';
 
-            const scrollProgress = window.scrollY / scrollHeight;
-            const trackHeight = track.clientHeight;
-            // Min height 50px so it's grabbable
-            const thumbHeight = Math.max(50, (window.innerHeight / document.documentElement.scrollHeight) * trackHeight);
+            const scrollY = window.scrollY;
+            const scrollProgress = Math.max(0, Math.min(1, scrollY / scrollHeight));
+            const thumbHeight = Math.max(50, (winHeight / docHeight) * trackHeight);
             const maxScrollTop = trackHeight - thumbHeight;
             const scrollTop = scrollProgress * maxScrollTop;
 
-            const currentScrollY = window.scrollY;
-            const velocity = currentScrollY - lastScrollY;
-            lastScrollY = currentScrollY;
+            const velocity = scrollY - lastScrollY;
+            lastScrollY = scrollY;
 
-            // Only stretch if we are not dragging manually
             let stretch = 1;
             let squeeze = 1;
             if (!isDragging.current) {
-                stretch = 1 + Math.min(Math.abs(velocity) * 0.005, 0.6);
-                squeeze = 1 - Math.min(Math.abs(velocity) * 0.002, 0.3);
+                stretch = 1 + Math.min(Math.abs(velocity) * 0.003, 0.4);
+                squeeze = 1 - Math.min(Math.abs(velocity) * 0.0015, 0.2);
             }
 
-            anime.set(thumb, {
-                height: `${thumbHeight}px`,
-                translateY: scrollTop,
-                scaleY: stretch,
-                scaleX: squeeze,
-                transformOrigin: velocity > 0 ? 'top center' : 'bottom center'
-            });
+            thumb.style.height = `${thumbHeight}px`;
+            thumb.style.transformOrigin = velocity >= 0 ? 'top center' : 'bottom center';
+            thumb.style.transform = `translate3d(0, ${scrollTop}px, 0) scaleY(${stretch}) scaleX(${squeeze})`;
 
-            clearTimeout(scrollTimeout);
-            if (!isDragging.current) {
-                scrollTimeout = setTimeout(() => {
-                    anime({
-                        targets: thumb,
-                        scaleY: 1,
-                        scaleX: 1,
-                        duration: 600,
-                        easing: 'easeOutElastic(1, .4)'
-                    });
-                }, 50);
+            ticking = false;
+        };
+
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(renderScrollbar);
+                ticking = true;
             }
         };
 
-        // Resize observer to detect DOM changes (fixes missing scrollbar bug)
+        const onResize = () => {
+            updateDimensions();
+            onScroll();
+        };
+
+        // Resize observer to detect DOM height changes
         const resizeObserver = new ResizeObserver(() => {
-            updateScrollbar();
+            onResize();
         });
         resizeObserver.observe(document.body);
 
-        window.addEventListener('scroll', updateScrollbar, { passive: true });
-        window.addEventListener('resize', updateScrollbar);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onResize);
         
         // Setup Dragging
         const onDragStart = (e: MouseEvent | TouchEvent) => {
@@ -112,14 +114,14 @@ export default function LiquidScrollbar() {
         window.addEventListener('mouseup', onDragEnd);
         window.addEventListener('touchend', onDragEnd);
 
-        updateScrollbar();
+        onScroll();
         
         // Fallback update after fonts/images load
-        setTimeout(updateScrollbar, 1000);
+        const fallbackTimer = setTimeout(onResize, 1000);
 
         return () => {
-            window.removeEventListener('scroll', updateScrollbar);
-            window.removeEventListener('resize', updateScrollbar);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onResize);
             resizeObserver.disconnect();
             window.removeEventListener('mousemove', onDragMove);
             window.removeEventListener('mouseup', onDragEnd);
@@ -127,7 +129,7 @@ export default function LiquidScrollbar() {
             window.removeEventListener('touchend', onDragEnd);
             thumb.removeEventListener('mousedown', onDragStart);
             thumb.removeEventListener('touchstart', onDragStart);
-            clearTimeout(scrollTimeout);
+            clearTimeout(fallbackTimer);
         };
     }, []);
 

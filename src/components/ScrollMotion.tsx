@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import anime from 'animejs';
 import Lenis from 'lenis';
-import gsap from 'gsap';
 
 export default function ScrollMotion() {
     useEffect(() => {
@@ -85,83 +84,45 @@ export default function ScrollMotion() {
         timelineItems.forEach(el => observer.observe(el));
 
         // Parallax and scrubbable animations tied to Lenis scroll
-        const parallaxImages = document.querySelectorAll('.project-card img, .project-card .img-placeholder');
-        const skewCards = document.querySelectorAll('.project-card');
-        const timelineProgress = document.querySelector('.timeline-progress') as HTMLElement;
-        const timeline = document.querySelector('.timeline') as HTMLElement;
-        const bentoContainer = document.querySelector('.bento-container') as HTMLElement;
+        const parallaxImages = document.querySelectorAll<HTMLElement>('.project-card img, .project-card .img-placeholder');
+        const timelineProgress = document.querySelector<HTMLElement>('.timeline-progress');
+        const timeline = document.querySelector<HTMLElement>('.timeline');
 
-        // Set initial states for parallax
-        anime.set(parallaxImages, { scale: 1.15 });
+        let ticking = false;
 
-        lenis.on('scroll', (e: { velocity?: number, direction?: number }) => {
+        const updateScrollEffects = () => {
             const windowHeight = window.innerHeight;
 
-            // Premium velocity-based skew (soft, capped, non-conflicting)
-            const velocity = e.velocity || 0;
-            const skewAmount = Math.max(Math.min(velocity * 0.1, 2), -2);
-
-            if (Math.abs(skewAmount) > 0.02) {
-                skewCards.forEach(card => {
-                    if (card.matches(':hover')) return;
-                    const rect = card.getBoundingClientRect();
-                    if (rect.top < windowHeight && rect.bottom > 0) {
-                        gsap.to(card, {
-                            skewY: skewAmount,
-                            duration: 0.2,
-                            ease: "power1.out",
-                            overwrite: "auto"
-                        });
-                    }
-                });
-            } else {
-                skewCards.forEach(card => {
-                    if (card.matches(':hover')) return;
-                    gsap.to(card, {
-                        skewY: 0,
-                        duration: 0.35,
-                        ease: "power2.out",
-                        overwrite: "auto"
-                    });
-                });
-            }
-
-            // 1. Timeline Progress Bar
+            // 1. Smooth Timeline Progress Bar
             if (timeline && timelineProgress) {
                 const timelineRect = timeline.getBoundingClientRect();
                 const timelineTop = timelineRect.top;
                 const timelineHeight = timelineRect.height;
 
-                let progress = (windowHeight / 2 - timelineTop) / (timelineHeight * 0.8);
+                let progress = (windowHeight * 0.5 - timelineTop) / (timelineHeight * 0.8);
                 progress = Math.max(0, Math.min(1, progress));
 
-                anime.set(timelineProgress, {
-                    scaleY: progress
-                });
+                timelineProgress.style.transform = `scaleY(${progress})`;
             }
 
-            // 2. Parallax images in projects
-            parallaxImages.forEach(img => {
+            // 2. Subtle Parallax for visible project cards images (GPU-accelerated)
+            for (let i = 0; i < parallaxImages.length; i++) {
+                const img = parallaxImages[i];
                 const rect = img.getBoundingClientRect();
                 if (rect.top < windowHeight && rect.bottom > 0) {
                     const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-                    const yOffset = (progress - 0.5) * 30; // Move from -15% to 15% roughly
-
-                    anime.set(img, {
-                        translateY: `${yOffset}%`
-                    });
+                    const yOffset = (progress - 0.5) * 16;
+                    img.style.transform = `scale(1.08) translate3d(0, ${yOffset}px, 0)`;
                 }
-            });
+            }
 
-            // 3. Subtle drift for bento container
-            if (bentoContainer) {
-                const rect = bentoContainer.getBoundingClientRect();
-                if (rect.top < windowHeight && rect.bottom > 0) {
-                    const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-                    anime.set(bentoContainer, {
-                        translateY: progress * -40
-                    });
-                }
+            ticking = false;
+        };
+
+        lenis.on('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollEffects);
+                ticking = true;
             }
         });
 

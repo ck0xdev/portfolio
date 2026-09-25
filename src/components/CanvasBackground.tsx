@@ -14,6 +14,7 @@ export default function CanvasBackground() {
 
         let width = window.innerWidth;
         let height = window.innerHeight;
+        let gradient: CanvasGradient | null = null;
         const particles: Particle[] = [];
 
         // Modern, vibrant colors for the particles
@@ -22,9 +23,13 @@ export default function CanvasBackground() {
         function resize() {
             width = window.innerWidth;
             height = window.innerHeight;
-            if(canvas) {
+            if (canvas && ctx) {
                 canvas.width = width;
                 canvas.height = height;
+                // Cache gradient on resize rather than creating it every frame
+                gradient = ctx.createLinearGradient(0, 0, width, height);
+                gradient.addColorStop(0, 'rgba(15, 15, 20, 0.8)');
+                gradient.addColorStop(1, 'rgba(5, 5, 10, 0.9)');
             }
         }
 
@@ -34,11 +39,9 @@ export default function CanvasBackground() {
         let scrollVelocity = 0;
         let lastScrollY = window.scrollY;
 
-        // Try to hook into Lenis if it exists (we initialize it globally or get the scroll event)
-        // For standalone, we listen to scroll but calculate velocity smoothly
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-            scrollVelocity = (currentScrollY - lastScrollY) * 0.8; // Amplified velocity
+            scrollVelocity = (currentScrollY - lastScrollY) * 0.35; // Gentle velocity to prevent particle jumps
             lastScrollY = currentScrollY;
         };
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -51,35 +54,29 @@ export default function CanvasBackground() {
             speedX: number;
             speedY: number;
             opacity: number;
-            baseY: number;
 
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.baseY = this.y;
-                this.size = Math.random() * 3 + 1.5;
+                this.size = Math.random() * 2 + 1.2;
                 this.color = colors[Math.floor(Math.random() * colors.length)];
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random() * 0.6 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.15;
             }
 
             update(scrollVelY: number) {
                 this.x += this.speedX;
-                // Add scroll velocity to Y position for parallax effect (larger particles move faster)
-                this.y += this.speedY - (scrollVelY * this.size * 0.15); 
+                this.y += this.speedY - (scrollVelY * this.size * 0.08);
 
-                // Wrap around edges smoothly
                 if (this.x > width + 10) this.x = -10;
                 if (this.x < -10) this.x = width + 10;
-                
-                // Infinite vertical wrapping for continuous scrolling
-                if (this.y > height + 50) this.y = -50;
-                if (this.y < -50) this.y = height + 50;
+                if (this.y > height + 20) this.y = -20;
+                if (this.y < -20) this.y = height + 20;
             }
 
             draw() {
-                if(!ctx) return;
+                if (!ctx) return;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
@@ -88,50 +85,50 @@ export default function CanvasBackground() {
             }
         }
 
-        // Create particles (denser on larger screens)
-        const particleCount = Math.min(Math.floor((width * height) / 15000), 100);
+        // Keep particle count lean and performant (max 40)
+        const particleCount = Math.min(Math.floor((width * height) / 35000), 40);
         for (let i = 0; i < particleCount; i++) {
             particles.push(new Particle());
         }
 
         let animationFrameId: number;
+        const maxDistSq = 80 * 80; // 6400
 
         function animate() {
-            if(!ctx) return;
-            // Create a trailing effect with semi-transparent clear
-            ctx.fillStyle = 'rgba(10, 10, 10, 1)'; // Dark background (fallback if CSS doesn't cover)
-            ctx.clearRect(0, 0, width, height);
+            if (!ctx) return;
 
-            scrollVelocity *= 0.90; // Friction to slow down the scroll effect
+            scrollVelocity *= 0.88;
 
-            // Add a subtle gradient background (dark mode aesthetic)
-            const gradient = ctx.createLinearGradient(0, 0, width, height);
-            gradient.addColorStop(0, 'rgba(15, 15, 20, 0.8)');
-            gradient.addColorStop(1, 'rgba(5, 5, 10, 0.9)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, width, height);
+            if (gradient) {
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+            } else {
+                ctx.clearRect(0, 0, width, height);
+            }
 
             // Update and draw particles
-            particles.forEach(p => {
-                p.update(scrollVelocity);
-                p.draw();
-            });
-
-            // Draw some connections between close particles for a "network" effect
-            ctx.globalAlpha = 1;
             for (let i = 0; i < particles.length; i++) {
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+                particles[i].update(scrollVelocity);
+                particles[i].draw();
+            }
 
-                    if (distance < 100) {
+            // Connect close particles with squared distance check
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                const pi = particles[i];
+                for (let j = i + 1; j < particles.length; j++) {
+                    const pj = particles[j];
+                    const dx = pi.x - pj.x;
+                    const dy = pi.y - pj.y;
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq < maxDistSq) {
+                        const alpha = (1 - distSq / maxDistSq) * 0.22;
                         ctx.beginPath();
-                        ctx.strokeStyle = particles[i].color;
-                        ctx.globalAlpha = (100 - distance) / 500; // Fade out as they get further
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = pi.color;
+                        ctx.globalAlpha = alpha;
+                        ctx.moveTo(pi.x, pi.y);
+                        ctx.lineTo(pj.x, pj.y);
                         ctx.stroke();
                     }
                 }

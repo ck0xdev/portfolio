@@ -131,60 +131,15 @@ function setupCursorGlow(cleanups: Array<() => void>) {
     cleanups.push(() => window.removeEventListener('click', handleGlobalClick));
 }
 
-function setupMagneticElements(cleanups: Array<() => void>) {
-    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
-        return;
-    }
-    const magneticElements = document.querySelectorAll<HTMLElement>('.magnetic, .btn');
-    
-    magneticElements.forEach((el) => {
-        const handleMouseMove = (e: Event) => {
-            const mouseEvent = e as MouseEvent;
-            const rect = el.getBoundingClientRect();
-            const x = mouseEvent.clientX - rect.left - rect.width / 2;
-            const y = mouseEvent.clientY - rect.top - rect.height / 2;
-            
-            anime({
-                targets: el,
-                translateX: x * 0.4,
-                translateY: y * 0.4,
-                scale: 1.1,
-                duration: 100,
-                easing: 'easeOutSine'
-            });
-        };
-
-        const handleMouseLeave = () => {
-            anime({
-                targets: el,
-                translateX: 0,
-                translateY: 0,
-                scale: 1,
-                duration: 1000,
-                easing: 'easeOutElastic(1, .3)'
-            });
-        };
-
-        el.addEventListener('mousemove', handleMouseMove);
-        el.addEventListener('mouseleave', handleMouseLeave);
-        
-        cleanups.push(() => {
-            el.removeEventListener('mousemove', handleMouseMove);
-            el.removeEventListener('mouseleave', handleMouseLeave);
-        });
-    });
-}
-
 export default function Interactivity() {
     useEffect(() => {
         const cleanups: Array<() => void> = [];
 
-        // Orchestrate all interactivity setups
+        // Orchestrate all interactivity setups without transform collisions
         setupSoftHoverEffects(cleanups);
         setupProjectCardParallax(cleanups);
         setupRippleEffect(cleanups);
         setupCursorGlow(cleanups);
-        setupMagneticElements(cleanups);
 
         // Cleanup function loops through and executes all collected removal tasks
         return () => {

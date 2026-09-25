@@ -12,7 +12,7 @@ export default function Animations() {
     const cleanups: Array<() => void> = [];
     const ctx = gsap.context(() => {
         // Initial State Setups
-        gsap.set('.enter-prompt', { xPercent: -50, yPercent: -50, y: 20, opacity: 0 });
+        gsap.set('.enter-prompt', { xPercent: -50, yPercent: -50, y: 20, opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
 
     // --- 1. Custom Cursor & Magnetic Elements ---
     const cursorDot = document.querySelector<HTMLElement>('.cursor-dot');
@@ -132,25 +132,36 @@ export default function Animations() {
         });
     });
 
-    // Update active nav item based on scroll position
-    const handleScroll = () => {
+    // Update active nav item based on scroll position (throttled)
+    let navTicking = false;
+    const updateActiveNav = () => {
         let current = '';
+        const scrollY = window.scrollY;
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+            if (scrollY >= (sectionTop - sectionHeight / 3)) {
                 current = section.getAttribute('id') || '';
             }
         });
 
         navItems.forEach(item => {
-            item.classList.remove('active');
             if (item.getAttribute('data-section') === current) {
-                item.classList.add('active');
+                if (!item.classList.contains('active')) item.classList.add('active');
+            } else {
+                if (item.classList.contains('active')) item.classList.remove('active');
             }
         });
+        navTicking = false;
     };
-    window.addEventListener('scroll', handleScroll);
+
+    const handleScroll = () => {
+        if (!navTicking) {
+            requestAnimationFrame(updateActiveNav);
+            navTicking = true;
+        }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     cleanups.push(() => window.removeEventListener('scroll', handleScroll));
 
     // --- 3. Initial GSAP Animations ---
@@ -440,6 +451,8 @@ export default function Animations() {
                 // Show interactive click prompt
                 .to('.enter-prompt', {
                     opacity: 1,
+                    visibility: 'visible',
+                    pointerEvents: 'auto',
                     y: 0,
                     duration: 0.6,
                     ease: "power2.out"
@@ -460,6 +473,8 @@ export default function Animations() {
 
                 .to('.enter-prompt', {
                     opacity: 0,
+                    visibility: 'hidden',
+                    pointerEvents: 'none',
                     y: -20,
                     duration: 0.4,
                     ease: "power2.in"
